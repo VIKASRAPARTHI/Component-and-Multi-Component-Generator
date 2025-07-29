@@ -4,14 +4,12 @@ import useUIStore from '@/store/uiStore';
 
 // Create axios instance
 const api = axios.create({
-  baseURL: process.env.NODE_ENV === 'production'
-    ? '/api'
-    : (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'),
+  baseURL: '/api', // Always use Next.js API routes
   timeout: 60000,
   headers: {
     'Content-Type': 'application/json',
   },
-  withCredentials: false, // Set to false for Vercel deployment
+  withCredentials: false,
 });
 
 // Request interceptor to add auth token
