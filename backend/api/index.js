@@ -1,4 +1,4 @@
-// Minimal serverless function for debugging
+// Simple backend with basic auth endpoints
 module.exports = (req, res) => {
   try {
     // Set CORS headers
@@ -12,18 +12,71 @@ module.exports = (req, res) => {
       return;
     }
 
+    const { url, method } = req;
+
+    // Parse request body for POST requests
+    let body = {};
+    if (method === 'POST' && req.body) {
+      body = req.body;
+    }
+
+    // Route handling
+    if (url === '/health') {
+      return res.status(200).json({
+        status: 'OK',
+        timestamp: new Date().toISOString(),
+        env: {
+          NODE_ENV: process.env.NODE_ENV,
+          hasMongoUri: !!process.env.MONGODB_URI,
+          hasJwtSecret: !!process.env.JWT_SECRET
+        }
+      });
+    }
+
+    if (url === '/api/auth/login' && method === 'POST') {
+      // Simple mock login
+      return res.status(200).json({
+        success: true,
+        data: {
+          user: {
+            id: '1',
+            name: body.email?.split('@')[0] || 'User',
+            email: body.email || 'user@example.com',
+            avatar: null,
+            preferences: {},
+            createdAt: new Date().toISOString()
+          },
+          token: 'mock-jwt-token-' + Date.now()
+        }
+      });
+    }
+
+    if (url === '/api/auth/register' && method === 'POST') {
+      // Simple mock register
+      return res.status(201).json({
+        success: true,
+        data: {
+          user: {
+            id: '1',
+            name: body.name || 'New User',
+            email: body.email || 'user@example.com',
+            avatar: null,
+            preferences: {},
+            createdAt: new Date().toISOString()
+          },
+          token: 'mock-jwt-token-' + Date.now()
+        }
+      });
+    }
+
+    // Default response
     res.status(200).json({
       success: true,
-      message: 'Minimal backend is working!',
+      message: 'Simple backend is working!',
       timestamp: new Date().toISOString(),
-      method: req.method,
-      url: req.url,
-      env: {
-        NODE_ENV: process.env.NODE_ENV,
-        hasMongoUri: !!process.env.MONGODB_URI,
-        hasJwtSecret: !!process.env.JWT_SECRET,
-        hasFrontendUrl: !!process.env.FRONTEND_URL
-      }
+      method,
+      url,
+      body
     });
   } catch (error) {
     console.error('Error in serverless function:', error);

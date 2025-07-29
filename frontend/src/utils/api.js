@@ -97,11 +97,18 @@ export const chatAPI = {
 
 // Utility functions
 export const handleAPIError = (error) => {
-  if (error.response?.data?.message) {
-    return error.response.data.message;
-  } else if (error.message) {
-    return error.message;
-  } else {
+  try {
+    if (error?.response?.data?.message) {
+      return error.response.data.message;
+    } else if (error?.message) {
+      return error.message;
+    } else if (typeof error === 'string') {
+      return error;
+    } else {
+      return 'An unexpected error occurred';
+    }
+  } catch (e) {
+    console.error('Error in handleAPIError:', e);
     return 'An unexpected error occurred';
   }
 };
