@@ -1,0 +1,49 @@
+# Root level gitignore for monorepo
+
+# Dependencies (each project should have its own node_modules)
+node_modules/
+
+# Package manager lockfiles (each project manages its own)
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Temporary folders
+tmp/
+temp/
+
+# Build directories
+build/
+dist/
+
+# Coverage
+coverage/
