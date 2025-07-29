@@ -69,6 +69,32 @@ module.exports = (req, res) => {
       });
     }
 
+    if (url === '/api/sessions' && method === 'GET') {
+      // Mock sessions list
+      return res.status(200).json({
+        success: true,
+        data: []
+      });
+    }
+
+    if (url === '/api/sessions' && method === 'POST') {
+      // Mock session creation
+      return res.status(201).json({
+        success: true,
+        data: {
+          id: 'session-' + Date.now(),
+          title: body.title || 'New Session',
+          description: body.description || '',
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+          metadata: {
+            totalMessages: 0,
+            lastActivity: new Date().toISOString()
+          }
+        }
+      });
+    }
+
     // Default response
     res.status(200).json({
       success: true,

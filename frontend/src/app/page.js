@@ -31,7 +31,8 @@ export default function Home() {
       console.log('Loading sessions...');
       const response = await sessionAPI.getSessions();
       console.log('Sessions loaded:', response.data);
-      setSessions(response.data.data || response.data || []);
+      const sessionsData = response.data?.data || response.data || [];
+      setSessions(Array.isArray(sessionsData) ? sessionsData : []);
     } catch (error) {
       console.error('Failed to load sessions:', error);
       // If it's an auth error, don't show sessions
@@ -214,7 +215,7 @@ export default function Home() {
                   </div>
                 ) : (
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {sessions.slice(0, 6).map((session, index) => (
+                    {(Array.isArray(sessions) ? sessions : []).slice(0, 6).map((session, index) => (
                       <div
                         key={session.id || session._id || `session-${index}`}
                         onClick={() => openSession(session)}

@@ -14,7 +14,7 @@ const useSessionStore = create((set, get) => ({
   hasUnsavedChanges: false,
 
   // Actions
-  setSessions: (sessions) => set({ sessions }),
+  setSessions: (sessions) => set({ sessions: Array.isArray(sessions) ? sessions : [] }),
   
   setCurrentSession: (session) => set({ 
     currentSession: session,
