@@ -45,7 +45,7 @@ npm run dev
 
 ## Architecture
 
-![App Screenshot](public/Architecture.png)
+![App Screenshot](https://github.com/VIKASRAPARTHI/Component-and-Multi-Component-Generator/blob/main/frontend/public/Architecture.png?raw=true)
 
 ```
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
