@@ -59,7 +59,11 @@ After deployment, note your backend URL:
 Add these in Vercel dashboard:
 ```
 NEXT_PUBLIC_API_URL=https://your-backend-app.vercel.app
+NEXT_PUBLIC_APP_URL=https://your-frontend-app.vercel.app
+NEXT_PUBLIC_APP_NAME=Component Generator Platform
 ```
+
+**Important:** Replace `your-backend-app.vercel.app` with your actual backend URL from Step 1.
 
 ## Step 3: Update CORS
 
