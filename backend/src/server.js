@@ -62,6 +62,23 @@ if (process.env.NODE_ENV === 'development') {
   app.use(morgan('combined'));
 }
 
+// Root route
+app.get('/', (req, res) => {
+  res.json({
+    success: true,
+    message: 'AI Component Generator Backend API',
+    version: '1.0.0',
+    status: 'running',
+    timestamp: new Date().toISOString(),
+    endpoints: {
+      health: '/health',
+      auth: '/api/auth/*',
+      sessions: '/api/sessions/*',
+      chat: '/api/chat/*'
+    }
+  });
+});
+
 // Health check endpoint
 app.get('/health', (req, res) => {
   res.status(200).json({
