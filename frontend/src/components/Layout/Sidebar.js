@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Plus, MessageSquare, History, Search, Filter } from 'lucide-react';
 import useSessionStore from '@/store/sessionStore';
 import useUIStore from '@/store/uiStore';
@@ -22,9 +22,9 @@ export default function Sidebar() {
 
   useEffect(() => {
     loadSessions();
-  }, []);
+  }, [loadSessions]);
 
-  const loadSessions = async () => {
+  const loadSessions = useCallback(async () => {
     try {
       setLoading(true);
       const response = await sessionAPI.getSessions({ search: searchQuery });
@@ -34,7 +34,7 @@ export default function Sidebar() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [searchQuery, setLoading, setSessions]);
 
   const handleCreateSession = async () => {
     try {

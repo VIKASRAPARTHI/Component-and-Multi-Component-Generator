@@ -137,7 +137,7 @@ export default function ExportModal({ isOpen, onClose, component, session }) {
 
             <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
               <h4 className="text-sm font-medium text-gray-900 dark:text-white mb-2">
-                What's included:
+                What&apos;s included:
               </h4>
               <ul className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
                 <li>• React component (JSX)</li>

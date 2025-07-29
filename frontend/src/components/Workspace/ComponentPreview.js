@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { RefreshCw, AlertTriangle, Smartphone, Tablet, Monitor } from 'lucide-react';
 
 export default function ComponentPreview({ jsx, css, props = {} }) {
@@ -13,13 +13,7 @@ export default function ComponentPreview({ jsx, css, props = {} }) {
     desktop: { width: '100%', height: '100%', icon: Monitor },
   };
 
-  useEffect(() => {
-    if (jsx) {
-      renderComponent();
-    }
-  }, [jsx, css, props]);
-
-  const renderComponent = async () => {
+  const renderComponent = useCallback(async () => {
     if (!jsx || !iframeRef.current) return;
 
     setIsLoading(true);
@@ -46,7 +40,13 @@ export default function ComponentPreview({ jsx, css, props = {} }) {
       setError(err.message);
       setIsLoading(false);
     }
-  };
+  }, [jsx, css, props]);
+
+  useEffect(() => {
+    if (jsx) {
+      renderComponent();
+    }
+  }, [jsx, renderComponent]);
 
   const createPreviewHTML = (jsxCode, cssCode, componentProps) => {
     // Transform JSX to executable JavaScript

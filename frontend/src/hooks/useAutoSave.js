@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useCallback } from 'react';
 import useSessionStore from '@/store/sessionStore';
 import useUIStore from '@/store/uiStore';
 import { sessionAPI } from '@/utils/api';
@@ -42,7 +42,7 @@ export default function useAutoSave() {
     };
   }, [currentSession, hasUnsavedChanges, autoSaveEnabled]);
 
-  const saveSession = async () => {
+  const saveSession = useCallback(async () => {
     if (!currentSession) return;
 
     try {
@@ -72,7 +72,7 @@ export default function useAutoSave() {
         message: 'Your changes could not be saved automatically'
       });
     }
-  };
+  }, [currentSession, updateSession, addNotification]);
 
   const forceSave = async () => {
     if (saveTimeoutRef.current) {

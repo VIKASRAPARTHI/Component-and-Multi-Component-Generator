@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Menu, X, Settings, User, LogOut, Sun, Moon } from 'lucide-react';
+import Image from 'next/image';
 import useAuthStore from '@/store/authStore';
 import useUIStore from '@/store/uiStore';
 import useSessionStore from '@/store/sessionStore';
@@ -61,9 +62,11 @@ export default function Header() {
           <HeadlessMenu as="div" className="relative">
             <HeadlessMenu.Button className="flex items-center space-x-2 p-2 rounded-md text-gray-500 hover:text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-gray-200 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
               {user?.avatar ? (
-                <img
+                <Image
                   src={user.avatar}
                   alt={user.name}
+                  width={24}
+                  height={24}
                   className="w-6 h-6 rounded-full"
                 />
               ) : (
