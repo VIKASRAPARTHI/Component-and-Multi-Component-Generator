@@ -7,8 +7,6 @@ import useAuthStore from '@/store/authStore';
 import useSessionStore from '@/store/sessionStore';
 import { chatAPI } from '@/utils/api';
 import ClientOnly from '@/components/ClientOnly';
-import ModelSelector from '@/components/ModelSelector';
-import ComponentPreview from '@/components/ComponentPreview';
 
 export default function WorkspacePage() {
   const router = useRouter();
@@ -27,11 +25,12 @@ export default function WorkspacePage() {
       router.push('/auth/login');
       return;
     }
-    if (!currentSession) {
-      router.push('/');
-      return;
-    }
-  }, [isAuthenticated, currentSession, router]);
+    // Allow workspace to load even without currentSession for now
+    // if (!currentSession) {
+    //   router.push('/');
+    //   return;
+    // }
+  }, [isAuthenticated, router]);
 
   const handleSendMessage = async () => {
     if (!message.trim() || isGenerating) return;
@@ -114,8 +113,12 @@ export default function WorkspacePage() {
     }
   };
 
-  if (!isAuthenticated || !currentSession) {
-    return null;
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
+      </div>
+    );
   }
 
   return (
@@ -138,18 +141,22 @@ export default function WorkspacePage() {
               </button>
               <div className="h-6 w-px bg-gray-300 dark:bg-gray-600"></div>
               <h1 className="text-xl font-semibold text-gray-900 dark:text-white">
-                {currentSession.title}
+                {currentSession?.title || 'Workspace'}
               </h1>
             </div>
             <div className="flex items-center space-x-4">
               {/* Model Selector */}
               <div className="flex items-center space-x-2">
                 <Sparkles className="w-4 h-4 text-blue-500" />
-                <ModelSelector
-                  selectedModel={selectedModel}
-                  onModelChange={setSelectedModel}
-                  className="min-w-48"
-                />
+                <select
+                  value={selectedModel}
+                  onChange={(e) => setSelectedModel(e.target.value)}
+                  className="px-3 py-2 border border-gray-300 rounded-md text-sm bg-white dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                >
+                  <option value="gpt-4o-mini">GPT-4o Mini</option>
+                  <option value="gpt-4o">GPT-4o</option>
+                  <option value="claude-3-haiku">Claude 3 Haiku</option>
+                </select>
               </div>
 
               {/* Settings */}
@@ -385,7 +392,7 @@ export default function WorkspacePage() {
                       <textarea
                         value={message}
                         onChange={(e) => setMessage(e.target.value)}
-                        onKeyPress={handleKeyPress}
+                        onKeyDown={handleKeyPress}
                         placeholder="Describe the component you want to create... (e.g., 'Create a modern login form with email and password fields')"
                         className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none transition-all"
                         rows={3}
@@ -478,12 +485,24 @@ export default function WorkspacePage() {
 
           {/* Preview Panel */}
           {activeTab === 'preview' && (
-            <div className="flex-1">
-              <ComponentPreview
-                jsx={generatedCode.jsx}
-                css={generatedCode.css}
-                className="h-full"
-              />
+            <div className="flex-1 p-4">
+              <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+                  Component Preview
+                </h3>
+                <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4 min-h-64">
+                  <p className="text-gray-600 dark:text-gray-400 text-center">
+                    Preview functionality coming soon...
+                  </p>
+                  {generatedCode.jsx && (
+                    <div className="mt-4">
+                      <p className="text-sm text-gray-500 dark:text-gray-400">
+                        Generated JSX: {generatedCode.jsx.length} characters
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </div>
             </div>
           )}
         </div>
