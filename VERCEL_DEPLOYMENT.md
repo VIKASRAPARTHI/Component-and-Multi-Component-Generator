@@ -15,6 +15,22 @@
 2. **Gemini**: https://makersuite.google.com/app/apikey → Create API key
 3. **JWT Secret**: Run `node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"`
 
+#### Required Environment Variables
+Add these in Vercel dashboard (Project Settings → Environment Variables):
+
+```
+NODE_ENV=production
+MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/component-generator
+JWT_SECRET=your-generated-jwt-secret
+JWT_EXPIRE=7d
+OPENROUTER_API_KEY=your-openrouter-key
+GEMINI_API_KEY=your-gemini-key
+FRONTEND_URL=https://your-app-name.vercel.app
+RATE_LIMIT_WINDOW_MS=900000
+RATE_LIMIT_MAX_REQUESTS=100
+NEXT_PUBLIC_API_URL=/api
+```
+
 ### 2. GitHub Setup
 
 ```bash
@@ -38,20 +54,7 @@ git push -u origin master
    - Output Directory: `frontend/.next`
 
 3. **Add Environment Variables:**
-   Go to Project Settings → Environment Variables and add:
-
-   ```
-   NODE_ENV=production
-   MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/component-generator
-   JWT_SECRET=your-generated-jwt-secret
-   JWT_EXPIRE=7d
-   OPENROUTER_API_KEY=your-openrouter-key
-   GEMINI_API_KEY=your-gemini-key
-   FRONTEND_URL=https://your-app-name.vercel.app
-   RATE_LIMIT_WINDOW_MS=900000
-   RATE_LIMIT_MAX_REQUESTS=100
-   NEXT_PUBLIC_API_URL=/api
-   ```
+   Go to Project Settings → Environment Variables and add all variables from step 1 above.
 
 4. **Deploy:**
    - Click "Deploy"
