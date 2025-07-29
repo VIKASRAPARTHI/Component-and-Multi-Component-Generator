@@ -1,44 +1,90 @@
-FROM node:18-alpine AS builder
+# AI Component Generator Platform - Deployment Guide
 
-WORKDIR /app
+## Production Deployment
 
-# Copy package files
-COPY package*.json ./
+### Prerequisites
+- Node.js 18+ 
+- MongoDB (local or MongoDB Atlas)
+- OpenRouter API Key
+- Google Gemini API Key
 
-# Install dependencies
-RUN npm ci
+### Backend Deployment
 
-# Copy source code
-COPY . .
+1. **Environment Setup:**
+   ```bash
+cd backend
+   cp .env.example .env
+   # Edit .env with your production values
+```
 
-# Build the application
-RUN npm run build
+2. **Install Dependencies:**
+   ```bash
+npm install --production
+```
 
-# Production stage
-FROM node:18-alpine AS runner
+3. **Start Production Server:**
+   ```bash
+npm start
+```
 
-WORKDIR /app
+### Frontend Deployment
 
-# Copy package files
-COPY package*.json ./
+1. **Environment Setup:**
+   ```bash
+cd frontend
+   # Update API_BASE_URL in src/utils/api.js for production
+```
 
-# Install only production dependencies
-RUN npm ci --only=production && npm cache clean --force
+2. **Build for Production:**
+   ```bash
+npm install
+   npm run build
+```
 
-# Copy built application
-COPY --from=builder /app/.next ./.next
-COPY --from=builder /app/public ./public
+3. **Start Production Server:**
+   ```bash
+npm start
+```
 
-# Create non-root user
-RUN addgroup -g 1001 -S nodejs
-RUN adduser -S nextjs -u 1001
+### Environment Variables
 
-# Change ownership
-RUN chown -R nextjs:nodejs /app
-USER nextjs
+#### Backend (.env)
+- `MONGODB_URI` - MongoDB connection string
+- `JWT_SECRET` - JWT signing secret
+- `OPENROUTER_API_KEY` - OpenRouter API key
+- `GEMINI_API_KEY` - Google Gemini API key
+- `FRONTEND_URL` - Frontend URL for CORS
 
-# Expose port
-EXPOSE 3000
+#### Frontend
+- Update `API_BASE_URL` in `src/utils/api.js`
 
-# Start the application
-CMD ["npm", "start"]
+### Production Checklist
+- [ ] MongoDB database configured
+- [ ] API keys configured
+- [ ] CORS settings updated
+- [ ] SSL certificates installed
+- [ ] Domain configured
+- [ ] Monitoring setup
+
+### Demo Credentials
+- Email: demo@example.com
+- Password: demo123
+
+## Development
+
+### Local Development
+```bash
+# Backend
+cd backend && npm run dev
+
+# Frontend  
+cd frontend && npm run dev
+```
+
+### Features
+- AI-powered component generation
+- Multiple AI models (GPT-4, Claude, Gemini)
+- Live component preview
+- Code export and download
+- Session management
+- User authentication

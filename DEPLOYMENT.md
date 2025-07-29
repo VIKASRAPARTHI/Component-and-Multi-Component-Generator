@@ -1,90 +1,90 @@
-# AI Component Generator Platform - Deployment Guide
+# Vercel Full-Stack Deployment Guide
 
-## Production Deployment
+## Quick Deployment Steps
 
-### Prerequisites
-- Node.js 18+ 
-- MongoDB (local or MongoDB Atlas)
-- OpenRouter API Key
-- Google Gemini API Key
+### 1. Push to GitHub
+```bash
+git add .
+git commit -m "Ready for Vercel deployment"
+git push origin main
+```
 
-### Backend Deployment
+### 2. Deploy on Vercel
+1. Go to https://vercel.com
+2. Click "New Project"
+3. Import your GitHub repository
+4. Vercel will auto-detect the configuration
 
-1. **Environment Setup:**
-   ```bash
-   cd backend
-   cp .env.example .env
-   # Edit .env with your production values
-   ```
+### 3. Add Environment Variables
+In Vercel dashboard, go to Project Settings → Environment Variables and add:
 
-2. **Install Dependencies:**
-   ```bash
-   npm install --production
-   ```
+```
+NODE_ENV=production
+MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/component-generator
+JWT_SECRET=your-32-character-secret-key
+JWT_EXPIRE=7d
+OPENROUTER_API_KEY=your-openrouter-api-key
+GEMINI_API_KEY=your-gemini-api-key
+FRONTEND_URL=https://your-app.vercel.app
+RATE_LIMIT_WINDOW_MS=900000
+RATE_LIMIT_MAX_REQUESTS=100
+```
 
-3. **Start Production Server:**
-   ```bash
-   npm start
-   ```
+### 4. Deploy
+Click "Deploy" and wait for the build to complete.
 
-### Frontend Deployment
+## Architecture on Vercel
 
-1. **Environment Setup:**
-   ```bash
-   cd frontend
-   # Update API_BASE_URL in src/utils/api.js for production
-   ```
+```
+your-app.vercel.app
+├── Frontend (Next.js) - Static + SSR
+├── /api/* - Backend API (Serverless Functions)
+└── Database (MongoDB Atlas)
+```
 
-2. **Build for Production:**
-   ```bash
-   npm install
-   npm run build
-   ```
+## Testing Deployment
 
-3. **Start Production Server:**
-   ```bash
-   npm start
-   ```
+### 1. Health Check
+Visit: `https://your-app.vercel.app/api/health`
+Should return: `{"status":"OK"}`
 
-### Environment Variables
+### 2. Full Test
+1. Visit your Vercel URL
+2. Register/login with demo credentials
+3. Create a session
+4. Generate a component
+5. Verify live preview works
 
-#### Backend (.env)
-- `MONGODB_URI` - MongoDB connection string
-- `JWT_SECRET` - JWT signing secret
-- `OPENROUTER_API_KEY` - OpenRouter API key
-- `GEMINI_API_KEY` - Google Gemini API key
-- `FRONTEND_URL` - Frontend URL for CORS
-
-#### Frontend
-- Update `API_BASE_URL` in `src/utils/api.js`
-
-### Production Checklist
-- [ ] MongoDB database configured
-- [ ] API keys configured
-- [ ] CORS settings updated
-- [ ] SSL certificates installed
-- [ ] Domain configured
-- [ ] Monitoring setup
-
-### Demo Credentials
+## Demo Credentials
 - Email: demo@example.com
 - Password: demo123
 
-## Development
+## Troubleshooting
 
-### Local Development
-```bash
-# Backend
-cd backend && npm run dev
+### Build Errors
+- Check build logs in Vercel dashboard
+- Verify all environment variables are set
+- Ensure MongoDB URI is correct
 
-# Frontend  
-cd frontend && npm run dev
-```
+### API Errors
+- Check function logs in Vercel dashboard
+- Verify API routes are working: `/api/health`
+- Check CORS configuration
 
-### Features
-- AI-powered component generation
-- Multiple AI models (GPT-4, Claude, Gemini)
-- Live component preview
-- Code export and download
-- Session management
-- User authentication
+### Database Issues
+- Verify MongoDB Atlas connection
+- Check IP whitelist (allow 0.0.0.0/0 for Vercel)
+- Test connection string
+
+## Benefits of Vercel Deployment
+
+✅ **Zero Configuration** - Auto-detects Next.js and Node.js
+✅ **Global CDN** - Fast worldwide performance
+✅ **Automatic HTTPS** - SSL certificates included
+✅ **Serverless Functions** - Backend scales automatically
+✅ **Git Integration** - Auto-deploy on push
+✅ **Custom Domains** - Easy domain setup
+✅ **Analytics** - Built-in performance monitoring
+
+Your AI Component Generator Platform will be live at:
+`https://your-app-name.vercel.app`
