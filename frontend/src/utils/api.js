@@ -4,7 +4,7 @@ import useUIStore from '@/store/uiStore';
 
 // Create axios instance
 const api = axios.create({
-  baseURL: '/api', // Always use Next.js API routes
+  baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001',
   timeout: 60000,
   headers: {
     'Content-Type': 'application/json',
