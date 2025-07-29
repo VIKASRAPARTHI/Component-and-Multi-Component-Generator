@@ -95,6 +95,30 @@ module.exports = (req, res) => {
       });
     }
 
+    if (url === '/api/chat/generate' && method === 'POST') {
+      // Mock component generation
+      return res.status(200).json({
+        success: true,
+        explanation: 'Here is your generated component!',
+        jsx: `function MyComponent() {
+  return (
+    <div className="p-4 bg-blue-100 rounded-lg">
+      <h2 className="text-xl font-bold text-blue-800">Generated Component</h2>
+      <p className="text-blue-600">This is a mock generated component.</p>
+    </div>
+  );
+}`,
+        css: `.my-component {
+  padding: 1rem;
+  background-color: #dbeafe;
+  border-radius: 0.5rem;
+}`,
+        componentName: 'MyComponent',
+        props: [],
+        dependencies: []
+      });
+    }
+
     // Default response
     res.status(200).json({
       success: true,

@@ -32,31 +32,35 @@ api.interceptors.response.use(
     return response;
   },
   (error) => {
-    const { addNotification } = useUIStore.getState();
-    const { logout } = useAuthStore.getState();
+    try {
+      const { addNotification } = useUIStore.getState();
+      const { logout } = useAuthStore.getState();
 
-    if (error.response?.status === 401) {
-      // Unauthorized - logout user
-      logout();
-      addNotification({
-        type: 'error',
-        title: 'Session Expired',
-        message: 'Please log in again to continue.',
-      });
-    } else if (error.response?.status >= 500) {
-      // Server error
-      addNotification({
-        type: 'error',
-        title: 'Server Error',
-        message: 'Something went wrong on our end. Please try again later.',
-      });
-    } else if (error.code === 'ECONNABORTED') {
-      // Timeout
-      addNotification({
-        type: 'error',
-        title: 'Request Timeout',
-        message: 'The request took too long. Please try again.',
-      });
+      if (error?.response?.status === 401) {
+        // Unauthorized - logout user
+        logout();
+        addNotification({
+          type: 'error',
+          title: 'Session Expired',
+          message: 'Please log in again to continue.',
+        });
+      } else if (error?.response?.status >= 500) {
+        // Server error
+        addNotification({
+          type: 'error',
+          title: 'Server Error',
+          message: 'Something went wrong on our end. Please try again later.',
+        });
+      } else if (error?.code === 'ECONNABORTED') {
+        // Timeout
+        addNotification({
+          type: 'error',
+          title: 'Request Timeout',
+          message: 'The request took too long. Please try again.',
+        });
+      }
+    } catch (interceptorError) {
+      console.error('Error in response interceptor:', interceptorError);
     }
 
     return Promise.reject(error);

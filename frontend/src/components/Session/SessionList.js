@@ -2,13 +2,19 @@ import { useState } from 'react';
 import { MoreVertical, Edit2, Copy, Trash2, MessageSquare } from 'lucide-react';
 import { Menu } from '@headlessui/react';
 
-export default function SessionList({ sessions, currentSession, onSessionSelect, onSessionDelete }) {
+export default function SessionList({
+  sessions = [],
+  currentSession = null,
+  onSessionSelect = () => {},
+  onSessionDelete = () => {}
+}) {
   const [editingId, setEditingId] = useState(null);
   const [editTitle, setEditTitle] = useState('');
 
   const handleEditStart = (session) => {
+    if (!session) return;
     setEditingId(session.id);
-    setEditTitle(session.title);
+    setEditTitle(session.title || '');
   };
 
   const handleEditSave = (sessionId) => {
@@ -22,9 +28,13 @@ export default function SessionList({ sessions, currentSession, onSessionSelect,
   };
 
   const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    const now = new Date();
-    const diffInHours = (now - date) / (1000 * 60 * 60);
+    if (!dateString) return 'Unknown';
+    try {
+      const date = new Date(dateString);
+      if (isNaN(date.getTime())) return 'Unknown';
+
+      const now = new Date();
+      const diffInHours = (now - date) / (1000 * 60 * 60);
 
     if (diffInHours < 1) {
       return 'Just now';

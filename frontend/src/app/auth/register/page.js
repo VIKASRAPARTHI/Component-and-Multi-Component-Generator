@@ -59,12 +59,21 @@ export default function RegisterPage() {
     try {
       const { confirmPassword, ...registerData } = formData;
       const response = await authAPI.register(registerData);
-      const { user, token } = response.data;
-      
+
+      // Safe data extraction
+      const responseData = response?.data || {};
+      const user = responseData.user || null;
+      const token = responseData.token || null;
+
+      if (!user || !token) {
+        throw new Error('Invalid response from server');
+      }
+
       login(user, token);
       toast.success('Account created successfully!');
       router.push('/');
     } catch (error) {
+      console.error('Registration error:', error);
       const errorMessage = handleAPIError(error);
       setError(errorMessage);
       toast.error(errorMessage);

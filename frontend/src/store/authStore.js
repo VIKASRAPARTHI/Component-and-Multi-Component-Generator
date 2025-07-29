@@ -37,7 +37,7 @@ const useAuthStore = create(
       clearError: () => set({ error: null }),
       
       updateUser: (userData) => set((state) => ({
-        user: { ...state.user, ...userData }
+        user: { ...(state.user || {}), ...(userData || {}) }
       })),
 
       // Computed

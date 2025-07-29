@@ -43,38 +43,41 @@ export default function WorkspacePage() {
       timestamp: new Date()
     };
 
-    setMessages(prev => [...prev, userMessage]);
+    setMessages(prev => Array.isArray(prev) ? [...prev, userMessage] : [userMessage]);
     const currentMessage = message.trim();
     setMessage('');
     setIsGenerating(true);
 
     try {
       const response = await chatAPI.generateComponent({
-        sessionId: currentSession.id,
+        sessionId: currentSession?.id || 'default',
         message: currentMessage,
         model: selectedModel
       });
+
+      // Safe data extraction
+      const responseData = response?.data || {};
 
       const assistantMessage = {
         id: Date.now() + 1,
         role: 'assistant',
         content: {
-          text: response.data.explanation || 'Component generated successfully!',
+          text: responseData.explanation || 'Component generated successfully!',
           code: {
-            jsx: response.data.jsx || '',
-            css: response.data.css || ''
+            jsx: responseData.jsx || '',
+            css: responseData.css || ''
           },
-          componentName: response.data.componentName,
-          props: response.data.props,
-          dependencies: response.data.dependencies
+          componentName: responseData.componentName,
+          props: responseData.props,
+          dependencies: responseData.dependencies
         },
         timestamp: new Date()
       };
 
-      setMessages(prev => [...prev, assistantMessage]);
+      setMessages(prev => Array.isArray(prev) ? [...prev, assistantMessage] : [assistantMessage]);
       setGeneratedCode({
-        jsx: response.data.jsx || '',
-        css: response.data.css || ''
+        jsx: responseData.jsx || '',
+        css: responseData.css || ''
       });
       setActiveTab('jsx');
 
@@ -88,7 +91,7 @@ export default function WorkspacePage() {
         },
         timestamp: new Date()
       };
-      setMessages(prev => [...prev, errorMessage]);
+      setMessages(prev => Array.isArray(prev) ? [...prev, errorMessage] : [errorMessage]);
     } finally {
       setIsGenerating(false);
     }

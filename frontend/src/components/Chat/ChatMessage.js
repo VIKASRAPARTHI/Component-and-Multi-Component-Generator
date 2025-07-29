@@ -2,13 +2,13 @@ import { useState } from 'react';
 import { User, Bot, Copy, Check, Code, Eye, Loader2 } from 'lucide-react';
 import useUIStore from '@/store/uiStore';
 
-export default function ChatMessage({ message }) {
+export default function ChatMessage({ message = {} }) {
   const [copied, setCopied] = useState(false);
   const { setActiveTab, addNotification } = useUIStore();
 
-  const isUser = message.role === 'user';
-  const isProcessing = message.status === 'processing';
-  const hasFailed = message.status === 'failed';
+  const isUser = message?.role === 'user';
+  const isProcessing = message?.status === 'processing';
+  const hasFailed = message?.status === 'failed';
 
   const handleCopyCode = async (code) => {
     try {

@@ -3,35 +3,36 @@
 import { useState, useEffect, useRef } from 'react';
 import { AlertTriangle, RefreshCw, Maximize2, Minimize2 } from 'lucide-react';
 
-export default function ComponentPreview({ jsx, css, className = '' }) {
+export default function ComponentPreview({ jsx = '', css = '', className = '' }) {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const iframeRef = useRef(null);
 
   useEffect(() => {
-    if (jsx) {
+    if (jsx && typeof jsx === 'string') {
       renderComponent();
     }
   }, [jsx, css]);
 
   const renderComponent = async () => {
-    if (!jsx) return;
+    if (!jsx || typeof jsx !== 'string') return;
 
     setIsLoading(true);
     setError(null);
 
     try {
       // Create the HTML content for the iframe
-      const htmlContent = createPreviewHTML(jsx, css);
-      
+      const htmlContent = createPreviewHTML(jsx, css || '');
+
       // Update iframe content
       if (iframeRef.current) {
         const iframe = iframeRef.current;
         iframe.srcdoc = htmlContent;
       }
     } catch (err) {
-      setError(err.message);
+      console.error('Preview render error:', err);
+      setError(err?.message || 'Failed to render component');
     } finally {
       setIsLoading(false);
     }
