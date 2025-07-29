@@ -193,7 +193,7 @@ export default function ChatPanel() {
               Start Creating
             </h3>
             <p className="text-gray-500 dark:text-gray-400 text-sm">
-              Describe the component you want to create and I'll generate it for you.
+              Describe the component you want to create and I&apos;ll generate it for you.
             </p>
           </div>
         ) : (
