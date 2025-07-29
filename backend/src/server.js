@@ -16,7 +16,11 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Connect to MongoDB
-connectDB();
+try {
+  connectDB();
+} catch (error) {
+  console.error('Failed to connect to MongoDB:', error);
+}
 
 // Security middleware
 app.use(helmet());
