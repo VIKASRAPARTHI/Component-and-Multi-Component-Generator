@@ -45,6 +45,8 @@ npm run dev
 
 ## Architecture
 
+![App Screenshot](public/Architecture.png)
+
 ```
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
 │   Frontend      │    │    Backend      │    │   Database      │
